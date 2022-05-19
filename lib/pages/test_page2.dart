@@ -10,41 +10,51 @@ class TestPage2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(testName),),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            const Text(
-              testName,
-              style: TextStyle(fontSize: 30.0),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              mainAxisSize: MainAxisSize.max,
+    return Consumer(
+      builder: (context, TestResult testResult, child) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(testName),
+          ),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                ElevatedButton(
-                    onPressed: () {
-                      context.read<TestResult>().updateResult(testName, false);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => ResultPage()));
-                    },
-                    child: const Text("Fail"),
-                    style: ElevatedButton.styleFrom(primary: Colors.redAccent)),
-                ElevatedButton(
-                    onPressed: () {
-                      context.read<TestResult>().updateResult(testName, true);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => ResultPage()));
-                    },
-                    child: const Text("Pass"),
-                    style: ElevatedButton.styleFrom(primary: Colors.lightGreen))
+                const Text(
+                  testName,
+                  style: TextStyle(fontSize: 30.0),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    ElevatedButton(
+                        onPressed: () {
+                          context
+                              .read<TestResult>()
+                              .updateResult(testName, false);
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (_) => ResultPage()));
+                        },
+                        child: const Text("Fail"),
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.redAccent)),
+                    ElevatedButton(
+                        onPressed: () {
+                          testResult.updateResult(testName, true);
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (_) => ResultPage()));
+                        },
+                        child: const Text("Pass"),
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.lightGreen))
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
