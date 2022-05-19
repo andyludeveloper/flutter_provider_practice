@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_practice/models/theme_notifier.dart';
 import 'package:flutter_practice/pages/start_page.dart';
 import 'package:provider/provider.dart';
 
@@ -14,14 +15,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<TestResult>(
-      create: (_) => TestResult(),
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const StartPage(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeNotifier>(create: (_) => ThemeNotifier()),
+        ChangeNotifierProvider<TestResult>(create: (_) => TestResult()),
+      ],
+      child: Consumer<ThemeNotifier>(
+        builder: (context, themeNotifier, child) {
+          return MaterialApp(
+            title: 'Flutter Demo',
+            theme:
+                themeNotifier.darkTheme ? ThemeData.dark() : ThemeData.light(),
+            home: const StartPage(),
+          );
+        },
       ),
     );
   }
